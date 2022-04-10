@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>contact</title>
+        <link rel="stylesheet" href="home1.css">
+        <link rel="stylesheet" href="cntcinfo.css">
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <li><a href="home.html">About Us</a></li>
+                <li><a href="index.html">Home</a></li>
+            </ul>
+        </nav>
+        <h2 id="contact">Contact Information</h2>
+        <br>
+        <main>
+            <form class="contactinfo" onsubmit="SubmitMsg(event)" >
+            <label for="email">Email</label>
+            <input type="email" name="email" id="mailid" required>
+            <label for="firstname">Fullname</label>
+            <input type="text" name="firstname" id="fname">
+            <label for="review">Customer review</label>
+            <textarea name="review" id="review" cols="20" rows="3" required>Comment here</textarea>
+            <!-- <input type="button" value="Submit" This does not work > -->
+            <input type="submit" value="submit">
+            <button>Clear</button>
+            </form>
+        
+        </main>
+
+        <footer>
+            <div class="formTitleSec">
+                <h3>Contact Messages</h3>
+                <button onclick="deleteMsg();">Clear Messages</button>
+            </div>
+            <div class="formwraper">
+                <dl id="CurrentMsg">
+                </dl>
+            </div>
+        </footer>
+        
+        <script>
+
+            function deleteMsg(){
+                if(window.sessionStorage.getItem("messagekey")){
+                    window.sessionStorage.removeItem("messagekey");
+                }
+            renderMsg();
+
+            }
+            function SubmitMsg(event){
+                event.preventDefault();
+                const email=document.getElementById("mailid").value;
+                const fullname=document.getElementById("fname").value;
+                const Comment=document.getElementById("review").value;
+            const MsgObj ={
+                email, fullname, Comment
+                
+            };
+            // console.log(MsgObj);
+            let currentMsg=[];
+            if (window.sessionStorage.getItem("messagekey")){
+                currentMsg=
+                JSON.parse(
+                window.sessionStorage.getItem("messagekey")
+                );
+            }
+            currentMsg.push(MsgObj);
+            window.sessionStorage.setItem(
+                "messagekey", JSON.stringify(currentMsg)
+            );
+            renderMsg();
+            return event;   
+            }
+            
+
+            function renderMsg(){
+                let currentMsg=[];
+            if (window.sessionStorage.getItem("messagekey")){
+                currentMsg=
+                JSON.parse(
+                window.sessionStorage.getItem("messagekey")
+                );
+            }
+            let listItems=[];
+            for(let i=0; i<currentMsg.length; i++){
+                let listItem='';
+                const currentmessage=currentMsg[i];
+                listItem += `<dt>${currentmessage.fullname} - ${currentmessage.email}</dt>`;
+                listItem += `<dd>${currentmessage.Comment} </dd>`;
+                listItem += `<br />`;
+                listItems.push(listItem);
+            }
+
+            let descripList= document.getElementById('CurrentMsg');
+            descripList.innerHTML=listItems.join('');
+
+            }
+            renderMsg();
+        </script>
+
+          <nav class="cntct">
+            <ul>
+                <li>
+                    <a href="Bakepoint.html">Back</a>
+                </li>
+            </ul>
+            </nav>
+
+    </body>
+</html>
